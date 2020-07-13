@@ -30,6 +30,7 @@ from tensorflow.contrib import data as contrib_data
 from tensorflow.contrib import metrics as contrib_metrics
 from tensorflow.contrib import tpu as contrib_tpu
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
