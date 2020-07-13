@@ -29,7 +29,7 @@ import tensorflow.compat.v1 as tf
 from tensorflow.contrib import data as contrib_data
 from tensorflow.contrib import metrics as contrib_metrics
 from tensorflow.contrib import tpu as contrib_tpu
-
+import pandas as pd
 
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
