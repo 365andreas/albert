@@ -113,7 +113,7 @@ class DataProcessor(object):
   def _read_tsv(cls, input_file, quotechar=None):
     """Reads a tab separated value file."""
     with tf.gfile.Open(input_file, "r") as f:
-      reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
+      reader = csv.reader(f, delimiter=",", quotechar=quotechar)
       lines = []
       for line in reader:
         lines.append(line)
@@ -191,17 +191,17 @@ class MrpcProcessor(DataProcessor):
   def get_train_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "MRPC", "train.tsv")), "train")
+        self._read_tsv(os.path.join(data_dir, "train_data-processed.csv")), "train")
 
   def get_dev_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "MRPC", "dev.tsv")), "dev")
+        self._read_tsv(os.path.join(data_dir, "dev.csv")), "dev")
 
   def get_test_examples(self, data_dir):
     """See base class."""
     return self._create_examples(
-        self._read_tsv(os.path.join(data_dir, "MRPC", "test.tsv")), "test")
+        self._read_tsv(os.path.join(data_dir, "test_data-processed.csv")), "test")
 
   def get_labels(self):
     """See base class."""
