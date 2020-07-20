@@ -191,13 +191,13 @@ class MrpcProcessor(DataProcessor):
 
   def get_train_examples(self, data_dir):
     """See base class."""
-    return self._create_examples(data_dir)
+    return self._create_examples(data_dir, "train")
     # return self._create_examples(
     #     self._read_tsv(os.path.join(data_dir, "train_data-processed.csv")), "train")
 
   def get_dev_examples(self, data_dir):
     """See base class."""
-    return self._create_eval_examples(data_dir)
+    return self._create_eval_examples(data_dir, "dev")
     # return self._create_examples(
     #     self._read_tsv(os.path.join(data_dir, "dev.csv")), "dev")
 
@@ -208,9 +208,9 @@ class MrpcProcessor(DataProcessor):
 
   def get_labels(self):
     """See base class."""
-    return [0, 1]
+    return ["0", "1"]
 
-  def _create_examples(self, data_dir):
+  def _create_examples(self, data_dir, set_type):
     """Creates examples for the training and dev sets."""
     examples = []
     # for (i, line) in enumerate(lines):
@@ -230,25 +230,25 @@ class MrpcProcessor(DataProcessor):
     data = pd.read_csv(data_dir, header=None,  index_col=0)
     data.columns=["Label", "Sentence"]
     data = data.dropna()
-    data.drop_duplicates(subset ="Sentence", inplace = True)
     data, _ = train_test_split(data, test_size=0.1, random_state=7)
 
-    for _, row in data.iterrows():
-        examples.append(InputExample(guid="unused_id", text_a=row['Sentence'], text_b=None, label=row['Label']))
+    for i, row in data.iterrows():
+        guid = "%s-%s" % (set_type, i)
+        examples.append(InputExample(guid=guid, text_a=self.process_text(row['Sentence']), text_b=None, label=self.process_text(row['Label'])))
 
     return examples
 
-  def _create_eval_examples(self, data_dir):
+  def _create_eval_examples(self, data_dir, set_type):
     examples = []
 
     data = pd.read_csv(data_dir, header=None,  index_col=0)
     data.columns=["Label", "Sentence"]
     data = data.dropna()
-    data.drop_duplicates(subset ="Sentence", inplace = True)
     _, data = train_test_split(data, test_size=0.1, random_state=7)
 
-    for _, row in data.iterrows():
-        examples.append(InputExample(guid="unused_id", text_a=row['Sentence'], text_b=None, label=row['Label']))
+    for i, row in data.iterrows():
+        guid = "%s-%s" % (set_type, i)
+        examples.append(InputExample(guid="guid", text_a=self.process_text(row['Sentence']), text_b=None, label=self.process_text(row['Label'])))
     return examples
 
 class ColaProcessor(DataProcessor):
