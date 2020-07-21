@@ -208,7 +208,7 @@ class MrpcProcessor(DataProcessor):
 
   def get_labels(self):
     """See base class."""
-    return ["0", "1"]
+    return [0, 1]
 
   def _create_examples(self, data_dir, set_type):
     """Creates examples for the training and dev sets."""
@@ -234,7 +234,7 @@ class MrpcProcessor(DataProcessor):
 
     for i, row in data.iterrows():
         guid = "%s-%s" % (set_type, i)
-        examples.append(InputExample(guid=guid, text_a=self.process_text(row['Sentence']), text_b=None, label=self.process_text(str(row['Label']))))
+        examples.append(InputExample(guid=guid, text_a=self.process_text(row['Sentence']), text_b=self.process_text(row['Sentence']), label=row['Label']))
 
     return examples
 
@@ -248,7 +248,7 @@ class MrpcProcessor(DataProcessor):
 
     for i, row in data.iterrows():
         guid = "%s-%s" % (set_type, i)
-        examples.append(InputExample(guid="guid", text_a=self.process_text(row['Sentence']), text_b=None, label=self.process_text(str(row['Label']))))
+        examples.append(InputExample(guid=guid, text_a=self.process_text(row['Sentence']), text_b=self.process_text(row['Sentence']), label=row['Label']))
     return examples
 
 class ColaProcessor(DataProcessor):
